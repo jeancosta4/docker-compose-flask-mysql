@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  db:
+    build: ./db/
+    environment:
+      MYSQL_DATABASE: user
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - net
+
+  web:
+    build: ./app/
+    ports:
+      - "5002:5000"
+    depends_on:
+      - db
+    networks:
+      - net
+
+volumes:
+  db-data:
+
+
+networks:
+  net:
+    driver: bridge
